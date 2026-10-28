@@ -208,6 +208,7 @@ function renderTodos() {
       }
       saveAll();
       renderTodos();
+      renderTimeGrid();
     });
 
     const text = document.createElement('span');

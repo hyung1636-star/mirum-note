@@ -29,6 +29,7 @@ body {
 
 .tabs {
   display: flex;
+  width: 100%;
   background: var(--ink);
   position: sticky;
   top: 0;
@@ -36,11 +37,13 @@ body {
 }
 
 .tab-btn {
-  flex: 1;
+  flex: 1 1 0;
+  width: 0;
   padding: 14px;
   background: transparent;
   color: #bbb;
   border: none;
+  text-align: center;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -334,7 +337,7 @@ body {
 .time-row.shaded-pending .time-todo-label { color: var(--danger); font-weight: 600; }
 .time-row.shaded-done { background: var(--gray-light); }
 .time-row.shaded-done input,
-.time-row.shaded-done .time-todo-label { color: var(--gray); font-weight: 600; }
+.time-row.shaded-done .time-todo-label { color: var(--ink); font-weight: 600; }
 .time-hour {
   width: 34px;
   font-size: 12px;
