@@ -219,6 +219,13 @@ function renderTodos() {
     mainRow.appendChild(checkbox);
     mainRow.appendChild(text);
 
+    if (todo.done) {
+      const doneBadge = document.createElement('span');
+      doneBadge.className = 'done-badge';
+      doneBadge.textContent = '✓ 완료';
+      mainRow.appendChild(doneBadge);
+    }
+
     const timeRange = document.createElement('div');
     timeRange.className = 'todo-time-range';
 
