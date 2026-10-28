@@ -159,11 +159,24 @@ body {
 
 .todo-item {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
   border-bottom: 1px dashed var(--line);
   padding-bottom: 8px;
+}
+
+.todo-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.todo-sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 26px;
 }
 
 .todo-item input[type="checkbox"] {

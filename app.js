@@ -188,6 +188,11 @@ function renderTodos() {
     const li = document.createElement('li');
     li.className = 'todo-item' + (todo.done ? ' done' : '');
 
+    const mainRow = document.createElement('div');
+    mainRow.className = 'todo-main';
+    const subRow = document.createElement('div');
+    subRow.className = 'todo-sub';
+
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = todo.done;
@@ -211,8 +216,8 @@ function renderTodos() {
       renderTimeGrid();
     });
 
-    li.appendChild(checkbox);
-    li.appendChild(text);
+    mainRow.appendChild(checkbox);
+    mainRow.appendChild(text);
 
     const timeRange = document.createElement('div');
     timeRange.className = 'todo-time-range';
@@ -256,7 +261,7 @@ function renderTodos() {
     timeRange.appendChild(startSelect);
     timeRange.appendChild(arrow);
     timeRange.appendChild(endSelect);
-    li.appendChild(timeRange);
+    subRow.appendChild(timeRange);
 
     const isPastDay = key < dateKey(new Date());
     if (!todo.done && isPastDay) {
@@ -273,7 +278,7 @@ function renderTodos() {
         if (todo.reason === r) opt.selected = true;
         select.appendChild(opt);
       });
-      li.appendChild(select);
+      subRow.appendChild(select);
 
       const noteInput = document.createElement('input');
       noteInput.type = 'text';
@@ -285,7 +290,7 @@ function renderTodos() {
         todo.reasonNote = noteInput.value.trim();
         saveAll();
       });
-      li.appendChild(noteInput);
+      subRow.appendChild(noteInput);
 
       select.addEventListener('change', () => {
         todo.reason = select.value;
@@ -305,7 +310,10 @@ function renderTodos() {
       renderTodos();
       renderTimeGrid();
     });
-    li.appendChild(del);
+    mainRow.appendChild(del);
+
+    li.appendChild(mainRow);
+    li.appendChild(subRow);
 
     list.appendChild(li);
   });
@@ -323,13 +331,18 @@ function addTodo() {
   const startIdx = startSel.value === '' ? null : Number(startSel.value);
   const endIdx = endSel.value === '' ? null : Number(endSel.value);
 
-  if (startIdx != null && endIdx != null && !confirmOverlapOrRevert(day, startIdx, endIdx, null)) {
+  if (startIdx == null || endIdx == null) {
+    alert('시작~종료 시간을 선택해야 할 일을 추가할 수 있어요.');
+    return;
+  }
+
+  if (!confirmOverlapOrRevert(day, startIdx, endIdx, null)) {
     return;
   }
 
   const todo = { id: uid(), text, done: false, reason: '', reasonNote: '', startIdx, endIdx };
   day.todos.push(todo);
-  if (startIdx != null && endIdx != null) syncTodoTime(day, todo);
+  syncTodoTime(day, todo);
 
   input.value = '';
   startSel.value = '';
