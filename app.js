@@ -161,7 +161,11 @@ function shadedSlotMap(day) {
     if (todo.startIdx == null || todo.endIdx == null) return;
     const from = Math.min(todo.startIdx, todo.endIdx);
     const to = Math.max(todo.startIdx, todo.endIdx);
-    for (let i = from; i <= to; i++) map[i] = true;
+    for (let i = from; i <= to; i++) {
+      if (map[i] !== 'pending') {
+        map[i] = todo.done ? 'done' : 'pending';
+      }
+    }
   });
   return map;
 }
@@ -306,6 +310,43 @@ function renderTodos() {
         if (!noteInput.hidden) noteInput.focus();
         saveAll();
       });
+
+      const moveDateInput = document.createElement('input');
+      moveDateInput.type = 'date';
+      moveDateInput.className = 'move-date-input';
+
+      const moveBtn = document.createElement('button');
+      moveBtn.className = 'move-btn';
+      moveBtn.textContent = '날짜 이동';
+      moveBtn.addEventListener('click', () => {
+        const targetKey = moveDateInput.value;
+        if (!targetKey) {
+          alert('옮길 날짜를 선택해주세요.');
+          return;
+        }
+        if (targetKey === key) {
+          alert('현재 날짜와 같아요.');
+          return;
+        }
+        const targetDay = getDay(targetKey);
+        if (
+          todo.startIdx != null && todo.endIdx != null &&
+          !confirmOverlapOrRevert(targetDay, todo.startIdx, todo.endIdx, todo.id)
+        ) {
+          return;
+        }
+        day.todos = day.todos.filter(t => t.id !== todo.id);
+        todo.reason = '';
+        todo.reasonNote = '';
+        targetDay.todos.push(todo);
+        if (todo.startIdx != null && todo.endIdx != null) syncTodoTime(targetDay, todo);
+        saveAll();
+        renderTodos();
+        renderTimeGrid();
+      });
+
+      subRow.appendChild(moveDateInput);
+      subRow.appendChild(moveBtn);
     }
 
     const del = document.createElement('button');
@@ -369,7 +410,7 @@ function renderTimeGrid() {
 
   SLOTS.forEach((s, idx) => {
     const row = document.createElement('div');
-    row.className = 'time-row' + (s.m !== 0 ? ' half' : '') + (shaded[idx] ? ' shaded' : '');
+    row.className = 'time-row' + (s.m !== 0 ? ' half' : '') + (shaded[idx] ? ' shaded-' + shaded[idx] : '');
 
     const label = document.createElement('div');
     label.className = 'time-hour';
