@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미룸노트</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#2a9d8f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="미룸노트">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="planner">플래너</button>
+    <button class="tab-btn" data-tab="stats">통계</button>
+  </nav>
+
+  <section id="planner" class="tab-page active">
+    <header class="top-bar">
+      <div class="brand">
+        <span class="hourglass">📝</span>
+        <div class="brand-text">
+          <strong>미룸노트</strong>
+          <small>하지 못한 이유까지 기록하는 하루 플래너</small>
+        </div>
+      </div>
+      <div class="date-nav">
+        <button id="prevDay" class="nav-btn">◀</button>
+        <div class="date-display">
+          <span id="dateLabel">10월 27일</span>
+          <span id="dowLabel">(화)</span>
+        </div>
+        <button id="nextDay" class="nav-btn">▶</button>
+        <button id="todayBtn" class="today-btn">오늘</button>
+      </div>
+    </header>
+
+    <main class="planner-grid">
+      <div class="left-col">
+        <div class="panel todo-panel">
+          <div class="panel-title todo-title">TO DO LIST</div>
+          <ul id="todoList" class="todo-list"></ul>
+          <div class="add-row">
+            <input id="todoInput" type="text" placeholder="할 일 추가 후 Enter">
+            <button id="addTodoBtn">+</button>
+          </div>
+          <div class="add-row-time">
+            <select id="addStartSelect" class="todo-time-select"></select>
+            <span class="time-range-arrow">~</span>
+            <select id="addEndSelect" class="todo-time-select"></select>
+          </div>
+        </div>
+
+        <div class="panel brain-panel">
+          <div class="panel-title">IDEA DUMP</div>
+          <textarea id="brainDump" placeholder="떠오르는 생각, 메모를 자유롭게 적어보세요"></textarea>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="panel time-panel">
+          <div class="panel-title">TIME PLAN</div>
+          <div class="alarm-note">🔔를 누르면 그 시간에 알림이 울려요 (이 탭을 열어둔 상태에서만 동작)</div>
+          <div id="timeGrid" class="time-grid"></div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section id="stats" class="tab-page">
+    <header class="top-bar">
+      <div class="brand">
+        <strong>통계</strong>
+      </div>
+      <div class="range-switch">
+        <button class="range-btn active" data-range="7">최근 7일</button>
+        <button class="range-btn" data-range="30">최근 30일</button>
+        <button class="range-btn" data-range="all">전체</button>
+      </div>
+    </header>
+
+    <main class="stats-body">
+      <div class="panel summary-panel">
+        <div class="summary-item">
+          <span class="summary-num" id="totalCount">0</span>
+          <span class="summary-label">전체 할 일</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-num" id="doneCount">0</span>
+          <span class="summary-label">완료</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-num" id="rateCount">0%</span>
+          <span class="summary-label">완료율</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">미완료 이유 분석</div>
+        <div id="reasonChart" class="reason-chart"></div>
+      </div>
+    </main>
+  </section>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
